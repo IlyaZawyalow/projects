@@ -2,7 +2,7 @@
 ## Оглавление:
 1. [Описание проекта](#project-description)
 2. [Данные](#data-description)
-3. [API HH](#api-description)
+3. [API HeadHunter](#api-description)
 4. [Парсер](#parser-description)
 5. [Аналогичные исследования](#similar-studies)
 6. [Результаты](#results)
@@ -27,7 +27,7 @@
 Собранные данные я выложил в свободный доступ на Kaggle: [IT вакансии с сайта HeadHunter](https://www.kaggle.com/datasets/ilyazawilsiv/it-vacancies-from-headhunter-website)
 
 <a name="api-description"></a>
-### API HH
+### API HeadHunter
 **Ограничения API HH:**
 * Ограничение на количество запросов: 10 запросов/сек/ip.
 * Ограничение на количество возвращаемых результатов в одном запросе. При выполнении запроса можно получить не более 2000 вакансий.
