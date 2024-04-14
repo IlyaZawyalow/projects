@@ -27,7 +27,6 @@ class DataBase:
         except Exception as err:
             logger.error(f'Error creating table: {err}')
             self.closeConnection()  # Close connection on error
-
     def closeConnection(self):
         if self.conn:
             self.cur.close()

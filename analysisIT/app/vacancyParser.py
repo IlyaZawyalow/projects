@@ -121,7 +121,6 @@ class VacancyParser:
             self.vacancyQueue.put(vacancyBody)
             if self.vacancyQueue.qsize() == 500:
                 self.addVacancyToDB(self.vacancyQueue)
-
     def addVacancyToDB(self, vacancyQueue):
         self.db.connect(tableName='vacancies')
         while not vacancyQueue.empty():
