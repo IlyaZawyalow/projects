@@ -131,6 +131,7 @@ class VacancyParser:
         self.db.closeConnection()
 
 
+
 class ApiClient:
 
     def __init__(self,
