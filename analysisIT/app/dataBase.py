@@ -32,7 +32,6 @@ class DataBase:
             self.cur.close()
             self.conn.close()
             logger.info('Database connection closed.')
-git
 
     def executeQuery(self, tableName: str, vacancyId: int, vacancyBody: dict):
         sql = f'INSERT INTO {tableName} (vacancies_id, data_jsonb) VALUES (%s, %s)'

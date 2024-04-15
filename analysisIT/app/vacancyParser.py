@@ -3,10 +3,8 @@ from datetime import datetime, timedelta, date
 from loguru import logger
 import queue
 import json
-from fake_useragent import UserAgent
 from typing import Dict, List, Set, Any, Union
 import requests
-import psycopg2
 from dataBase import DataBase
 
 ID_ROLES_LIST = ['118', '114', '164', '126', '112', '10', '25', '38', '171', '84', '104', '172', '96', '166', '125',
@@ -65,7 +63,6 @@ class VacancyParser:
         data = self.api.makeRequest(params=params)
         if data == None:
             return dateRight
-        print(data['found'])
         if data['found'] <= DEFAULT_MAX_REC_RETURNED:
             self.timeIntervalsList.append([dateLeft, dateRight])
 
@@ -115,12 +112,15 @@ class VacancyParser:
 
     def getVacancyBody(self, vacancyIdsSet):
         for id in vacancyIdsSet:
-            vacancyBody = self.api.makeRequest(vacancyId=id)
+
+            vacancyBody = self.api.makeRequest(vacancyId=int(id))
+
             if vacancyBody == None:
                 continue
             self.vacancyQueue.put(vacancyBody)
             if self.vacancyQueue.qsize() == 500:
                 self.addVacancyToDB(self.vacancyQueue)
+
     def addVacancyToDB(self, vacancyQueue):
         self.db.connect(tableName='vacancies')
         while not vacancyQueue.empty():
@@ -129,7 +129,6 @@ class VacancyParser:
 
             self.db.executeQuery(tableName='vacancies', vacancyId=vacancyId, vacancyBody=vacancyBody)
         self.db.closeConnection()
-
 
 
 class ApiClient:
@@ -157,7 +156,6 @@ class ApiClient:
             url = self.base_url + f'{vacancyId}'
         else:
             url = self.base_url
-
         try:
             req = requests.get(url, params, proxies=proxy, timeout=timeout)
             req.raise_for_status()
@@ -191,11 +189,12 @@ class ApiClient:
             self.count += 1
             data = req.content.decode()
             data = json.loads(data)
-            if 'items' in data and retry:
-                if data['items'] == []:
+
+            if 'items' in data:
+                if data['items'] == [] and retry:
                     data = self.makeRequest(vacancyId, params, proxy, retry=(retry - 1))
-            else:
-                return None
+                elif data['items'] == []:
+                    return None
             return data
         finally:
             if req != None:
@@ -213,6 +212,6 @@ def get_date(left, timedelta_in_seconds):
 
 
 if __name__ == '__main__':
-    li = get_date(0, 1500)
+    li = get_date(0, 5000)
     pars = VacancyParser(*li)
     pars.run()
