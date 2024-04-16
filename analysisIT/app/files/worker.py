@@ -17,7 +17,6 @@ DEFAULT_MIN_STEP_SIZE = 300
 DEFAULT_MAX_REC_RETURNED = 2000
 URL = 'https://api.hh.ru/vacancies/'
 
-
 class Worker:
     """
     Сlass with functions for splitting the time interval,getting vacancy
@@ -28,6 +27,7 @@ class Worker:
             self,
             date_from: date,
             date_to: date
+
     ):
         self.date_from = date_from
         self.date_to = date_to
@@ -35,7 +35,7 @@ class Worker:
         self.vacancy_queue = queue.Queue()
         self.time_intervals_list = []
         self.api = ApiClient(URL, ID_ROLES_LIST)
-        self.db = DataBase(dbname='mydb', username='postgres', host='localhost', password='2280')
+        self.db = DataBase()
 
     def process_time_interval(self, date_left: date, date_right: date) -> date:
         """
@@ -55,7 +55,7 @@ class Worker:
 
         if data == None:
             return date_right
-        print(data['found'])
+
         if data['found'] <= DEFAULT_MAX_REC_RETURNED:
             self.time_intervals_list.append([date_left, date_right])
         else:
@@ -115,12 +115,12 @@ class Worker:
         """
         Adds vacancy bodies to the database
         """
-        self.db.connect(table_name='vacancies')
+        self.db.connect()
         while not vacancy_queue.empty():
             vacancy_body = vacancy_queue.get()
             vacancy_id = vacancy_body['id']
 
-            self.db.execute_query(table_name='vacancies', vacancy_id=vacancy_id, vacancy_body=vacancy_body)
+            self.db.execute_query(vacancy_id=vacancy_id, vacancy_body=vacancy_body)
         self.db.close_connection()
 
     def run(self) -> None:
@@ -180,10 +180,10 @@ class ApiClient:
                 self.count_errors = 0
                 return None
 
-            logger.info(f'{e} retry {retry} proxy {proxy}')
+            logger.info(f'ConnectionError!! {e} retry {retry} proxy {proxy}')
             time.sleep(15)
 
-            return 'change the proxy'
+            return None
 
         except Exception as err:
             self.count_errors += 1
@@ -191,12 +191,12 @@ class ApiClient:
                 self.count_errors = 0
                 return None
 
-            time.sleep(4)
+            time.sleep(8)
             if retry:
                 logger.info(f'{err}. retry {retry} proxy {proxy}')
                 return self.make_request(vacancy_id, params, proxy, retry=(retry - 1))
             else:
-                return 'change the proxy'
+                return None
 
         else:
             self.count_errors = 0
@@ -231,7 +231,7 @@ def main() -> None:
     """
     Used mostly for testing; this module is not usually run standalone
     """
-    li = get_date(0, 300)
+    li = get_date(0, 2000)
     pars = Worker(*li)
     pars.run()
 
