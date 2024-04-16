@@ -9,9 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 
-RUN mkdir -p /app/data
-RUN chmod -R 777 /app/data
-
-USER nobody
-
 CMD ["python", "app.py"]
