@@ -4,7 +4,6 @@ import worker
 import chartBuilder
 import processing
 import matplotlib.pyplot as plt
-import numpy as np
 import io
 import base64
 
