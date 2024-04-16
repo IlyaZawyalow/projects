@@ -6,4 +6,3 @@ pandas
 loguru
 psycopg2-binary
 sqlalchemy
-fake_useragent
