@@ -1,8 +1,0 @@
-flask
-matplotlib
-numpy
-requests
-pandas
-loguru
-psycopg2-binary
-sqlalchemy
