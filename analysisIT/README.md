@@ -96,4 +96,4 @@
 * DB: PostgreSQL
 * Backend: Flask, SQLAlchemy
 * Контейнеризация: Docker, Docker Compose
-* Библиотеки: Matplotlib, NumPy, Requests, Pandas, Loguru, Psycopg2
+* Библиотеки: Matplotlib, NumPy, Requests, Pandas, Loguru, Psycopg2 и др.
