@@ -68,11 +68,9 @@ Web-приложение состоит из следующий компонен
 * **Брокер сообщени**: RabbitMQ
 * **Контейнеризация**: Docker, Docker Compose
 * **Оркестрация**: Kubernetes
----
+
 <details>
 <summary><b>Скриншот приложения</b></summary>
 
 ![Приложение](img/app.jpg)
 </details>
-
----
