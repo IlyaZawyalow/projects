@@ -37,3 +37,8 @@
 * Методы Feature Importance и Feature Permutation я не использовал, так как уже применял их в предыдущих проектах. Вместо этого я выбрал SequentialFeatureSelector для опробования новых методов.
 
 ## Результат:
+Score на kaggle = 0.96500 . 47 место из 5425 участников. <u><a src='https://www.kaggle.com/competitions/catch-me-if-you-can-intruder-detection-through-webpage-session-tracking2/leaderboard'>LB Public</a></u>
+
+К сожалению не хватило времени, чтобы:
+
+* попробовать Feature Selection на l1 saga
